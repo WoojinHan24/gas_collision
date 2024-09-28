@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 objects = {path = "../../libs/objects"}
 vector = {path = "../../libs/vector"}
-
-[[bin]]
-name = "run_simulations"
-path = "main.rs"
+rand = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+dotenv = "0.15.0"

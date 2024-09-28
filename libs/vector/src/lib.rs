@@ -1,9 +1,13 @@
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 use std::fmt;
 use std::ops::{Add, AddAssign, Div, Mul, Sub};
 
-#[derive(Clone, Copy)]
+#[serde_as]
+#[derive(Clone, Copy, Serialize, Deserialize)]
 pub struct Vector<const D: usize> {
-    coordinates: [f64; D],
+    #[serde_as(as = "[_; D]")]
+    pub coordinates: [f64; D],
 }
 
 impl<const D: usize> Vector<D> {

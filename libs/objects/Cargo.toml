@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 vector = {path = "../vector"}
 
+
 [lib]
 name = "objects"
 path = "src/lib.rs"
