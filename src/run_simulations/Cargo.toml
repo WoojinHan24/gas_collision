@@ -1,0 +1,12 @@
+[package]
+name = "run_simulations"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+objects = {path = "../../libs/objects"}
+vector = {path = "../../libs/vector"}
+
+[[bin]]
+name = "run_simulations"
+path = "main.rs"

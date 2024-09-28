@@ -1,0 +1,8 @@
+[workspace]
+
+resolver = "2"
+members = [
+    "libs/objects",
+    "libs/vector",
+    "src/run_simulations"
+]
