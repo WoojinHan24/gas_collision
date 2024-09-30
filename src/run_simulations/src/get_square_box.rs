@@ -1,3 +1,4 @@
+use objects::add_on::physics_engine::PhysicsEngine;
 use objects::features::{balls::ChargedBall, walls::RigidWall};
 use rand::Rng;
 use vector::Vector;
@@ -18,26 +19,50 @@ pub fn get_balls<const DIM: usize>(
     length_info: &Vec<f64>,
     mass: &f64,
     charge: &f64,
+    v_mean: &f64,
 ) -> Vec<ChargedBall<DIM>> {
-    let zero_vec = Vector::<DIM>::new([0.0; DIM]);
-    let mut rng = rand::thread_rng();
-    // let basis_set = get_basis_set();
+    // let zero_vec = Vector::<DIM>::new([0.0; DIM]);
 
     let mut balls = vec![];
+    let coords_vec: Vec<[f64; DIM]> = get_random_coords(n, length_info);
+    let velocity_vec: Vec<[f64; DIM]> = get_random_velocity(n, v_mean);
+
+    for (coords, velocity) in coords_vec.iter().zip(velocity_vec.iter()) {
+        balls.push(ChargedBall::new(PhysicsEngine::new(
+            Vector::<DIM>::new(*coords),
+            Vector::<DIM>::new(*velocity),
+            mass.clone(),
+            charge.clone(),
+        )))
+    }
+    balls
+}
+
+fn get_random_coords<const DIM: usize>(n: usize, length_info: &Vec<f64>) -> Vec<[f64; DIM]> {
+    let mut rng = rand::thread_rng();
+
+    let mut coords_vec = vec![];
     for _ in 0..n {
         let mut coords: [f64; DIM] = [0.0; DIM];
         for (i, len) in length_info.iter().enumerate() {
             coords[i] = rng.gen::<f64>() * len;
         }
-
-        balls.push(ChargedBall::new(
-            Vector::<DIM>::new(coords),
-            charge.clone(),
-            mass.clone(),
-            zero_vec.clone(),
-        ))
+        coords_vec.push(coords);
     }
-    balls
+    coords_vec
+}
+
+fn get_random_velocity<const DIM: usize>(n: usize, v_mean: &f64) -> Vec<[f64; DIM]> {
+    let mut rng = rand::thread_rng();
+    let mut velocity_vec = vec![];
+    for _ in 0..n {
+        let mut coords: [f64; DIM] = [0.0; DIM];
+        for i in 0..DIM {
+            coords[i] = rng.gen::<f64>() * v_mean * 2.0 - v_mean;
+        }
+        velocity_vec.push(coords);
+    }
+    velocity_vec
 }
 
 fn get_basis_set<const DIM: usize>() -> Vec<Vector<DIM>> {

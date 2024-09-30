@@ -1,3 +1,4 @@
+use crate::add_on::physics_engine::PhysicsEngine;
 use vector::Vector;
 
 pub struct RigidWall<const D: usize> {
@@ -13,7 +14,9 @@ impl<const D: usize> RigidWall<D> {
         }
     }
 
-    pub fn collide(&self, position: &mut Vector<D>, velocity: &mut Vector<D>) {
+    pub fn collide(&self, ball_engine: &mut PhysicsEngine<D>) {
+        let position = &mut ball_engine.position;
+        let velocity = &mut ball_engine.velocity;
         let position_norm = self.normal_vector.inner_product(&position);
         let velocity_norm = self.normal_vector.inner_product(&velocity);
         if position_norm > self.crits {
